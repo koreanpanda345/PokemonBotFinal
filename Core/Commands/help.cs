@@ -10,10 +10,10 @@ using System.Linq;
 namespace PokemonBot.Core.Commands
 {
 
-    public class help : ModuleBase<SocketCommandContext>
+    public class Help : ModuleBase<SocketCommandContext>
     {
         private readonly CommandService _service;
-        public help(CommandService service)
+        public Help(CommandService service)
         {
             _service = service;
         }
@@ -43,9 +43,34 @@ namespace PokemonBot.Core.Commands
 
                     if (!string.IsNullOrWhiteSpace(description))
                     {
+                        string name;
+                        if(module.Name == "Help")
+                        {
+                            name = $" ▶ Need some help: ";
+                        }
+                        else if(module.Name == "Information")
+                        {
+                            name = $"▶ What pokemon is that?:";
+                        }
+                        else if(module.Name == "Start")
+                        {
+                            name = $"▶ Get Started with your adventure :";
+                        }
+                        else if(module.Name == "Battling")
+                        {
+                            name = $"▶ Get Ready to DUUUUEEELLL: ";
+                        }
+                        else if(module.Name == "Catch")
+                        {
+                            name = $"▶ Catching Pokemon?:";
+                        }
+                        else
+                        {
+                            name = module.Name;
+                        }
                         builder.AddField(x =>
                         {
-                            x.Name = module.Name;
+                            x.Name = name;
                             x.Value = description;
                             x.IsInline = false;
                         });
