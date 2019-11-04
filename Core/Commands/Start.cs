@@ -9,6 +9,7 @@ using PokeApiNet.Models;
 using PokemonBot.Core.Data;
 using System.IO;
 using Newtonsoft.Json;
+using PokemonBot.Core.Calculations;
 
 namespace PokemonBot.Core.Commands
 {
@@ -92,7 +93,7 @@ namespace PokemonBot.Core.Commands
             string _nature = NatureChance[spawnNature];
             Pokemon _poke = await pokeClient.GetResourceAsync<Pokemon>(poke);
             Console.WriteLine(_poke.Stats);
-            int hp = ((2 * _poke.Stats[5].BaseStat + spawnHp) * 5) / 100 + 10;
+            int hp = Calculations.PokemonCalcs.getHp(spawnHp, _poke.Stats[5].BaseStat, 5);
             int atk = (((2 * _poke.Stats[4].BaseStat + spawnAtk) * 5) / 100 + 10);
             int def = (((2 * _poke.Stats[3].BaseStat + spawnDef) * 5) / 100 + 10);
             int spAtk = (((2 * _poke.Stats[2].BaseStat + spawnSpAtk) * 5) / 100 + 10);

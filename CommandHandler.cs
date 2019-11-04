@@ -44,10 +44,10 @@ namespace PokemonBot
             if (!(Message.HasStringPrefix("p.", ref ArgsPos) || Message.HasMentionPrefix(Client.CurrentUser, ref ArgsPos)))
             {
 
-                if (PokemonData.HasStarter(Context.Message.Author.Id))
+                /*if (PokemonData.HasStarter(Context.Message.Author.Id))
                 {
                     Xp.UserSentMessage((SocketGuildUser)Context.User, (SocketTextChannel)Context.Channel);
-                }
+                }*/
                 return;
             }
             var Result = await Command.ExecuteAsync(Context, ArgsPos, null);

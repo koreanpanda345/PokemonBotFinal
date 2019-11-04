@@ -45,6 +45,7 @@ namespace PokemonBot
 
             client.Ready += Client_Ready;
             client.Log += Client_Log;
+            client.ReactionAdded += OnReactionAdded;
             if (Config.bot.token == "" || Config.bot.token == null) return;
 
             //using (var Stream = new FileStream(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).Replace(@"bin\Debug\netcoreapp2.1", @"Data\Token.text"), FileMode.Open, FileAccess.Read))
@@ -57,6 +58,20 @@ namespace PokemonBot
             await ConsoleInput();
             await Task.Delay(-1);
         }
+
+        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            if(reaction.MessageId == Global.MessageIdToTrack)
+            {
+                if (reaction.Emote.Name == "◀")
+                {
+                    await channel.SendMessageAsync($"{reaction.User.Value.Username} says ◀");
+                }
+            }
+
+ 
+        }
+
         private async Task ConsoleInput()
         {
             

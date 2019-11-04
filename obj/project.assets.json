@@ -4504,11 +4504,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\korea\\source\\repos\\PokemonBot\\PokemonBot\\PokemonBot.csproj",
+      "projectUniqueName": "C:\\Users\\korea\\source\\repos\\PokemonBot\\PokemonBot.csproj",
       "projectName": "PokemonBot",
-      "projectPath": "C:\\Users\\korea\\source\\repos\\PokemonBot\\PokemonBot\\PokemonBot.csproj",
+      "projectPath": "C:\\Users\\korea\\source\\repos\\PokemonBot\\PokemonBot.csproj",
       "packagesPath": "C:\\Users\\korea\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\korea\\source\\repos\\PokemonBot\\PokemonBot\\obj\\",
+      "outputPath": "C:\\Users\\korea\\source\\repos\\PokemonBot\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

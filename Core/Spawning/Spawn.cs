@@ -46,9 +46,9 @@ namespace PokemonBot.Core.Spawning
                 var embed = new EmbedBuilder();
                 embed.WithTitle("A wild pokemon has appeared!");
                 embed.WithDescription("Guess the pokemon and type p.catch <pokemon> to catch it");
-                embed.WithImageUrl($"{poke.Sprites.FrontShiny}");
+            embed.WithImageUrl("https://play.pokemonshowdown.com/sprites/xyani-shiny/" + poke.Name + ".gif");
 
-                await channel.SendMessageAsync("", embed: embed.Build());
+            await channel.SendMessageAsync("", embed: embed.Build());
             
         }
             internal static async void SpawnPokemon(SocketGuild guild, SocketTextChannel channel, string PokemonName)
@@ -80,9 +80,9 @@ namespace PokemonBot.Core.Spawning
                     var embed = new EmbedBuilder();
                     embed.WithTitle("A wild pokemon has appeared!");
                     embed.WithDescription("Guess the pokemon and type p.catch <pokemon> to catch it");
-                    embed.WithImageUrl($"{poke.Sprites.FrontShiny}");
+                    embed.WithImageUrl("https://play.pokemonshowdown.com/sprites/xyani-shiny/" + poke.Name + ".gif");
 
-                    await channel.SendMessageAsync("", embed: embed.Build());
+                await channel.SendMessageAsync("", embed: embed.Build());
                 }
                 else
                 {
@@ -107,9 +107,9 @@ namespace PokemonBot.Core.Spawning
                     var embed = new EmbedBuilder();
                     embed.WithTitle("A wild pokemon has appeared!");
                     embed.WithDescription("Guess the pokemon and type p.catch <pokemon> to catch it");
-                    embed.WithImageUrl($"{poke.Sprites.FrontDefault}");
+                embed.WithImageUrl("http://play.pokemonshowdown.com/sprites/xyani/" + poke.Name + ".gif");
 
-                    await channel.SendMessageAsync("", embed: embed.Build());
+                await channel.SendMessageAsync("", embed: embed.Build());
                 }
         }
         internal static async void UserSentMessage(SocketGuildUser user, SocketTextChannel channel)
@@ -147,7 +147,7 @@ namespace PokemonBot.Core.Spawning
                     var embed = new EmbedBuilder();
                     embed.WithTitle("A wild pokemon has appeared!");
                     embed.WithDescription("Guess the pokemon and type p.catch <pokemon> to catch it");
-                    embed.WithImageUrl($"{poke.Sprites.FrontShiny}");
+                    embed.WithImageUrl("https://play.pokemonshowdown.com/sprites/xyani-shiny/" + poke.Name + ".gif");
 
                     await channel.SendMessageAsync("", embed: embed.Build());
                 }
@@ -177,7 +177,7 @@ namespace PokemonBot.Core.Spawning
                     var embed = new EmbedBuilder();
                     embed.WithTitle("A wild pokemon has appeared!");
                     embed.WithDescription("Guess the pokemon and type p.catch <pokemon> to catch it");
-                    embed.WithImageUrl($"{poke.Sprites.FrontDefault}");
+                    embed.WithImageUrl("http://play.pokemonshowdown.com/sprites/xyani/" + poke.Name + ".gif");
 
                     await channel.SendMessageAsync("", embed: embed.Build());
                 }
