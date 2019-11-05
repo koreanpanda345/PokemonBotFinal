@@ -20,7 +20,7 @@ namespace PokemonBot.Core.Data
             if (name == "adaptability")
                 return adapt.Get();
             else
-            return placeholder;
+            return placeholder; 
         }
     }
     public struct Ability
