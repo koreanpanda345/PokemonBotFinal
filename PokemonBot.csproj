@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Resources\Datatypes\" />
     <Folder Include="Resources\Extensions\" />
   </ItemGroup>

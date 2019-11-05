@@ -64,6 +64,7 @@ namespace PokemonBot.Core.Commands
             await msg.AddReactionAsync(backwards);
             await msg.AddReactionAsync(forward);
             Global.MessageIdToTrack = msg.Id;
+            
         }
 
         [Command("info"), Summary("Lets you info your pokemon.")]
@@ -181,7 +182,7 @@ namespace PokemonBot.Core.Commands
                     $"**Speed:** {poke.Stats[5].BaseStat}\n");
 
             }
-            embed.WithImageUrl(poke.Sprites.FrontDefault);
+            embed.WithImageUrl("http://play.pokemonshowdown.com/sprites/xyani/" + name + ".gif");
             await Context.Channel.SendMessageAsync("", embed: embed.Build());
         }
 

@@ -15,139 +15,6 @@ namespace PokemonBot.Core.Calculations
         {
             return ((2 * _base + hp + 100) * level) / 100 + 10;
         }
-
-
-        public static double getStats(ulong Id, int pkm, int _num, Pokemon poke)
-        {
-            List<double> Iv = new List<double>();
-            ulong user = Id;
-            int num = pkm;
-            int level = Data.PokemonData.GetLevel(user, num);
-            string nature = Data.PokemonData.GetNature(user, num);
-            int ivAtk = Data.PokemonData.GetIvs(user, num, 1);
-            int ivDef = Data.PokemonData.GetIvs(user, num, 2);
-            int ivSpatk = Data.PokemonData.GetIvs(user, num, 3);
-            int ivSpdef = Data.PokemonData.GetIvs(user, num, 4);
-            int ivSpe = Data.PokemonData.GetIvs(user, num, 5);
-            double atk = (((2 * poke.Stats[4].BaseStat + ivAtk) * level) / 100 + 5);
-            double def = (((2 * poke.Stats[3].BaseStat + ivDef) * level) / 100 + 5);
-            double spatk = (((2 * poke.Stats[2].BaseStat + ivSpatk) * level) / 100 + 5);
-            double spdef = (((2 * poke.Stats[1].BaseStat + ivSpdef) * level) / 100 + 5);
-            double spe = (((2 * poke.Stats[0].BaseStat + ivSpe) * level) / 100 + 5);
-            /**
-             * Natures
-              */
-            //Attacks
-            if (nature == "Lonely")
-            {
-                atk *= 1.10;
-                def /= 1.10;
-            }
-            else if (nature == "Brave")
-            {
-                atk *= 1.10;
-                spe /= 1.10;
-            }
-            else if (nature == "Adamant")
-            {
-                atk *= 1.10;
-                spatk /= 1.10;
-            }
-            else if (nature == "Naughty")
-            {
-                atk *= 1.10;
-                spdef /= 1.10;
-            }
-            else if (nature == "Bold")
-            {
-                def *= 1.10;
-                atk /= 1.10;
-            }
-            else if (nature == "Relaxed")
-            {
-                def *= 1.10;
-                spe /= 1.10;
-            }
-            else if (nature == "Impish")
-            {
-                def *= 1.10;
-                spatk /= 1.10;
-            }
-            else if (nature == "Lax")
-            {
-                def *= 1.10;
-                spdef /= 1.10;
-            }
-            else if (nature == "Timid")
-            {
-                spe *= 1.10;
-                atk /= 1.10;
-            }
-            else if (nature == "Hasty")
-            {
-                spe *= 1.10;
-                def /= 1.10;
-            }
-            else if (nature == "Jolly")
-            {
-                spe *= 1.10;
-                spatk /= 1.10;
-            }
-            else if (nature == "Naive")
-            {
-                spe *= 1.10;
-                spdef /= 1.10;
-            }
-            else if (nature == "Modest")
-            {
-                spatk *= 1.10;
-                atk /= 1.10;
-            }
-            else if (nature == "Mild")
-            {
-                spatk *= 1.10;
-                def /= 1.10;
-            }
-            else if (nature == "Quiet")
-            {
-                spatk *= 1.10;
-                spe /= 1.10;
-            }
-            else if (nature == "Rash")
-            {
-                spatk *= 1.10;
-                spdef /= 1.10;
-            }
-            else if (nature == "Calm")
-            {
-                spdef *= 1.10;
-                atk /= 1.10;
-            }
-            else if (nature == "Gentle")
-            {
-                spdef *= 1.10;
-                def /= 1.10;
-            }
-            else if (nature == "Sassy")
-            {
-                spdef *= 1.10;
-                spe /= 1.10;
-            }
-            else if (nature == "Careful")
-            {
-                spdef *= 1.10;
-                spatk /= 1.10;
-            }
-
-
-
-            Iv.Add(Math.Floor(Math.Round(atk)));
-            Iv.Add(Math.Floor(Math.Round(def)));
-            Iv.Add(Math.Floor(Math.Round(spatk)));
-            Iv.Add(Math.Floor(Math.Round(spdef)));
-            Iv.Add(Math.Floor(Math.Round(spe)));
-            return Iv[_num];
-        }
         public static double GetAtk(string nature, int _atk, int _base, int level)
         {
             double atk = (((2 * _base + _atk) * level) / 100 + 5);
@@ -332,7 +199,6 @@ namespace PokemonBot.Core.Calculations
 
             return Math.Floor(Math.Round(speed));
         }
-       
         public static double getTotalIv(int hp, int atk, int def, int spatk, int spdef, int speed)
         {
             int average = (hp + atk + def + spatk + spdef + speed);
@@ -340,6 +206,21 @@ namespace PokemonBot.Core.Calculations
             double total = Math.Floor(Math.Round((averageDouble / 186) * 100));
             
             return total;
+        }
+        //Exp
+        public static double getExpNeed(string speed, double level)
+        {
+            double exp = 0;
+
+            if (speed == "fast")
+                exp = (Math.Floor( 4* Math.Pow(level, 3)) / 5);
+            else if (speed == "medium fast") 
+                exp = (Math.Floor(Math.Pow(level, 3)));
+            else if(speed == "medium fast")
+                exp = Math.Floor((6 / 5) *  Math.Pow( level, 3) - (15 * Math.Pow( level, 2)) + (100 * level) - 140);
+            else if(speed == "slow")
+                exp = Math.Floor(5 * Math.Pow( level, 3) / 4);
+            return exp;
         }
     }
 }
