@@ -27,14 +27,14 @@ namespace PokemonBot
         {
             client = new DiscordSocketClient(new DiscordSocketConfig
             {
-                LogLevel = LogSeverity.Debug
+                LogLevel = LogSeverity.Verbose
             });
 
             command = new CommandService(new CommandServiceConfig
             {
                 CaseSensitiveCommands = true,
                 DefaultRunMode = RunMode.Async,
-                LogLevel = LogSeverity.Debug
+                LogLevel = LogSeverity.Verbose
             });
         }
         public async Task MainAsync()

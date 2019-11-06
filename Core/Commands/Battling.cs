@@ -11,7 +11,7 @@ using PokeApiNet.Models;
 using PokemonBot.Core.Data;
 namespace PokemonBot.Core.Commands
 {
-    public class Battling : ModuleBase<SocketCommandContext>
+     class Battling : ModuleBase<SocketCommandContext>
     {
         private IGuildUser Challenger;
         private IGuildUser Challenged;
