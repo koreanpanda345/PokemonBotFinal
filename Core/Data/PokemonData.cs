@@ -304,7 +304,6 @@ namespace PokemonBot.Core.Data
 
             result.Close();
             database.CloseConnection();
-            Console.WriteLine(database.myConnection);
             return 0;
         }
 
@@ -337,7 +336,7 @@ namespace PokemonBot.Core.Data
             database.CloseConnection();
             return false;
         }
-        public static async Task SavePokemon(ulong id, string PokeName, int level, int[] Iv, string nature, int shiny)
+        public static Task SavePokemon(ulong id, string PokeName, int level, int[] Iv, string nature, int shiny)
         {
             int i = 0;
             SqliteDbContext database = new SqliteDbContext();
@@ -382,9 +381,8 @@ namespace PokemonBot.Core.Data
 
             database.CloseConnection();
 
-            Console.WriteLine(database.myConnection.State);
             Console.WriteLine($"Created a new row with {PokeName}, {level}");
-
+            return Task.CompletedTask;
         }
 
         /**

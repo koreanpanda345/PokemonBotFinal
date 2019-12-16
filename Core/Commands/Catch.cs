@@ -6,7 +6,7 @@ using System.IO;
 using Discord;
 using Discord.Commands;
 using System.Linq;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 using PokemonBot.Core.Spawning;
 using System.Data.SQLite;
@@ -42,33 +42,7 @@ namespace PokemonBot.Core.Commands
                 {
                     shiny = 0;
                 }
-                string[] NatureChance = {
-                "Hardy",
-                "Lonely",
-                "Brave",
-                "Adamant",
-                "Naughty",
-                "Bold",
-                "Docile",
-                "Relaxed",
-                "Impish",
-                "Lax",
-                "Timid",
-                "Hasty",
-                "Serious",
-                "Jolly",
-                "Naive",
-                "Modest",
-                "Mild",
-                "Quiet",
-                "Bashful",
-                "Rash",
-                "Calm",
-                "Gentle",
-                "Sassy",
-                "Careful",
-                "Quirky"
-            };
+                string[] NatureChance = new Natures().NatureChance;
                 int lvl = RandomNumber(1, 50);
                 int spawnHp = RandomNumber(1, 31);
                 int spawnAtk = RandomNumber(1, 31);

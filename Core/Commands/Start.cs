@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 using PokemonBot.Core.Data;
 using System.IO;
@@ -52,33 +52,7 @@ namespace PokemonBot.Core.Commands
             {
                 await Context.Channel.SendMessageAsync("That is not a valid starter pokemon");
             }
-            string[] NatureChance = {
-                "Hardy",
-                "Lonely",
-                "Brave",
-                "Adamant",
-                "Naughty",
-                "Bold",
-                "Docile",
-                "Relaxed",
-                "Impish",
-                "Lax",
-                "Timid",
-                "Hasty",
-                "Serious",
-                "Jolly",
-                "Naive",
-                "Modest",
-                "Mild",
-                "Quiet",
-                "Bashful",
-                "Rash",
-                "Calm",
-                "Gentle",
-                "Sassy",
-                "Careful",
-                "Quirky"
-            };
+            string[] NatureChance = new Natures().NatureChance;
             int spawnHp = RandomNumber(1, 31);
             int spawnAtk = RandomNumber(1, 31);
             int spawnDef = RandomNumber(1, 31);
@@ -88,8 +62,6 @@ namespace PokemonBot.Core.Commands
             double ivTotal = (((spawnHp + spawnAtk + spawnDef + spawnSpAtk + spawnSpDef + spawnSpe) / 186) * 100);
             double totalIv = Math.Round(ivTotal);
             int spawnNature = RandomNumber(1, 24);
-            //atk = (((2 * infoPokemon.base_stats.atk + _atk) * _lvl) / 100) + 10;
-            //HP = ((2 * infoPokemon.base_stats.hp + _hp + 100) * _lvl) /100 + 10;
             string _nature = NatureChance[spawnNature];
             Pokemon _poke = await pokeClient.GetResourceAsync<Pokemon>(poke);
             Console.WriteLine(_poke.Stats);

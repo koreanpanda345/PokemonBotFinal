@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Discord;
 using Discord.WebSocket;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 using System.Data.SQLite;
 using System.IO;

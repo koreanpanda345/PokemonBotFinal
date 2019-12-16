@@ -19,10 +19,8 @@ namespace PokemonBot
 
     public class PokemonBot
     {
-            private bool BeingTested = false;
-    private DiscordSocketClient client;
-    private CommandService command;
-        private IServiceProvider service;
+        private DiscordSocketClient client;
+        private CommandService command;
         public PokemonBot()
         {
             client = new DiscordSocketClient(new DiscordSocketConfig
@@ -39,296 +37,86 @@ namespace PokemonBot
         }
         public async Task MainAsync()
         {
-
             var cmdHandler = new CommandHandler(client, command);
-            await cmdHandler.InitializeAsync();
+            var events = new Events(client, command);
 
-            client.Ready += Client_Ready;
-            client.Log += Client_Log;
-            client.ReactionAdded += OnReactionAdded;
+            await cmdHandler.InitializeAsync();
+            await events.InitializeAsync();
+
             if (Config.bot.token == "" || Config.bot.token == null) return;
 
-            //using (var Stream = new FileStream(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).Replace(@"bin\Debug\netcoreapp2.1", @"Data\Token.text"), FileMode.Open, FileAccess.Read))
-            //using (var ReadToken = new StreamReader(Stream))
-            //{
-            //    Token = ReadToken.ReadToEnd();
-            //}
             await client.LoginAsync(TokenType.Bot, Config.bot.token);
             await client.StartAsync();
             await ConsoleInput();
             await Task.Delay(-1);
         }
 
-        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> cache, ISocketMessageChannel channel, SocketReaction reaction)
+        public async Task ConsoleInput()
         {
-            if(reaction.MessageId == Global.MessageIdToTrack)
-            {
-                if (reaction.Emote.Name == "◀")
-                {
-                    await channel.SendMessageAsync($"{reaction.User.Value.Username} says ◀");
-                }
-            }
-
- 
-        }
-
-        private async Task ConsoleInput()
-        {
-            
-            string input = string.Empty;
+            ConsoleCommands console = new ConsoleCommands(client);
+            string input = Console.ReadLine();
             while (input.Trim().ToLower() != "block")
             {
-                
-                input = Console.ReadLine();
-                if(input.Trim().ToLower() == "help")
+                switch (input.Trim().ToLower())
                 {
-                    HelpMessage();
-                }
-                if(input.Trim().ToLower() == "activity")
-                {
-                    ActivityChange();
-                }
-                if (input.Trim().ToLower() == "message")
-                {
-                    ConsoleSendMessage();
-                }
-                if (input.Trim().ToLower() == "spawn")
-                {
-                    SpawnPokemon();
-                }
-                if (input.Trim().ToLower() == "shinyspawn")
-                {
-                    ShinySpawnPokemon();
-                }
-                if (input.Trim().ToLower() == "update")
-                {
-                    ConsoleUpdate();
-                }
-                if (input.Trim().ToLower() == "sql")
-                {
-                    SQLConsole();
-                }
-                if (input.Trim().ToLower() == "close")
-                {
-                    CloseDatabase();
-                }
-                if (input.Trim().ToLower() == "connection")
-                {
-                    Connection();
-                }
-                if (input.Trim().ToLower() == "status")
-                {
-                    ClientStatus();
-                }
-            }
-        }
-        private async void HelpMessage()
-        {
-            Console.WriteLine(
-                "help\n" +
-                "activity\n" +
-                "message\n" +
-                "spawn\n" +
-                "shinyspawn\n" +
-                "update\n" +
-                "sql\n" +
-                "close\n" +
-                "connection\n" +
-                "status");
-        }
-        private async void ActivityChange()
-        {
-            var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
-            {
-                Console.WriteLine("Status: ");
-                msg = Console.ReadLine();
-            }
-            if(msg == "online") await client.SetStatusAsync(UserStatus.Online);
-            if(msg == "idle") await client.SetStatusAsync(UserStatus.Idle);
-            if(msg == "dnd") await client.SetStatusAsync(UserStatus.DoNotDisturb);
-            if(msg == "inv") await client.SetStatusAsync(UserStatus.Invisible);
-        }
-        private async void ClientStatus()
-        {
-
-            Console.WriteLine($"Bot is {client.ConnectionState}\nUsername: {client.CurrentUser}\nBot Status: {client.Status}\nActivity set to: {client.Activity.Name}\nGuilds Count: {client.Guilds.Count()}\nGuild Name");
-            var socketGuilds = client.Guilds.ToList();
-            var maxIndex = client.Guilds.Count();
-            for (var i = 0; i < maxIndex; ++i)
-            {
-                Console.WriteLine($"{i + 1} - {socketGuilds[i]}");
-            }
-        }
-        private async void Connection()
-        {
-            SqliteDbContext database = new SqliteDbContext();
-            Console.WriteLine($"Database Connection is {database.myConnection.State}");
-            Console.WriteLine($"Database is {database.myConnection.BusyTimeout}");
-        }
-        private async void CloseDatabase()
-        {
-            SqliteDbContext database = new SqliteDbContext();
-            if (database.myConnection.State == System.Data.ConnectionState.Open)
-            {
-                database.CloseConnection();
-                Console.WriteLine("Closed database");
-            }
-            else if (database.myConnection.State == System.Data.ConnectionState.Closed)
-            {
-                Console.WriteLine("database is already closed");
-            }
-        }
-        private async void SQLConsole()
-        {
-            var command = string.Empty;
-            while (command.Trim() == string.Empty)
-            {
-                Console.WriteLine("SQL COMMAND");
-                command = Console.ReadLine();
-                SqliteDbContext database = new SqliteDbContext();
-                string query = $"{command}";
-                SQLiteCommand myCommand = new SQLiteCommand(query, database.myConnection);
-                database.OpenConnection();
-                SQLiteDataReader result = myCommand.ExecuteReader();
-
-                if (result.HasRows)
-                {
-                    while (result.Read())
-                    {
-                        if (command.Contains("*"))
-                        {
-                            Console.WriteLine();
-                        }
-                        else
-                        {
-                            Console.WriteLine(result.ToString());
-                        }
-
-                    }
-                }
-                result.Close();
-                database.CloseConnection();
-            }
-        }
-        private async void ConsoleUpdate()
-        {
-            var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
-            {
-                Console.WriteLine("Your Message: ");
-                msg = Console.ReadLine();
-            }
-            await client.SetGameAsync($"{msg}", "", ActivityType.Watching);
-            await client.SetStatusAsync(UserStatus.DoNotDisturb);
-        }
-        private async void ConsoleSendMessage()
-        {
-            Console.WriteLine("Select the guild:");
-            var guild = GetSelectedGuild(client.Guilds);
-            var textChannel = GetSelectedTextChannel(guild.TextChannels);
-            var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
-            {
-                Console.WriteLine("Your Message: ");
-                msg = Console.ReadLine();
-            }
-            await textChannel.SendMessageAsync(msg);
-        }
-        private void SpawnPokemon()
-        {
-            Console.WriteLine("Select the guild: ");
-            var guild = GetSelectedGuild(client.Guilds);
-            var textChannel = GetSelectedTextChannel(guild.TextChannels);
-            var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
-            {
-                Console.WriteLine("Pokemon: ");
-                msg = Console.ReadLine();
-            }
-            Spawn.SpawnPokemon(guild, textChannel, msg);
-        }
-        private void ShinySpawnPokemon()
-        {
-            Console.WriteLine("Select the guild: ");
-            var guild = GetSelectedGuild(client.Guilds);
-            var textChannel = GetSelectedTextChannel(guild.TextChannels);
-            var msg = string.Empty;
-            while (msg.Trim() == string.Empty)
-            {
-                Console.WriteLine("Pokemon: ");
-                msg = Console.ReadLine();
-            }
-            Spawn.SpawnPokemon(guild, textChannel, msg);
-        }
-        private SocketTextChannel GetSelectedTextChannel(IEnumerable<SocketTextChannel> channels)
-        {
-            var textChannels = channels.ToList();
-            var maxIndex = channels.Count() - 1;
-            for (var i = 0; i <= maxIndex; ++i)
-            {
-                Console.WriteLine($"{i} - {textChannels[i].Name}");
-            }
-            var selectedIndex = -1;
-            while (selectedIndex < 0 || selectedIndex > maxIndex)
-            {
-                var success = int.TryParse(Console.ReadLine().Trim(), out selectedIndex);
-                if (!success)
-                {
-                    Console.WriteLine("That was an Invalid Index, try again.");
-                    selectedIndex = -1;
-                }
-                if (selectedIndex < 0 || selectedIndex > maxIndex) Console.WriteLine("This is a valid index");
-            }
-
-            return textChannels[selectedIndex];
-        }
-
-        private SocketGuild GetSelectedGuild(IEnumerable<SocketGuild> guilds)
-        {
-            var socketGuilds = guilds.ToList();
-            var maxIndex = guilds.Count() - 1;
-            for (var i = 0; i <= maxIndex; ++i)
-            {
-                Console.WriteLine($"{i} - {socketGuilds[i].Name}");
-            }
-            var selectedIndex = -1;
-            while (selectedIndex < 0 || selectedIndex > maxIndex)
-            {
-                var success = int.TryParse(Console.ReadLine().Trim(), out selectedIndex);
-                if (!success)
-                {
-                    Console.WriteLine("That was an Invalid Index, try again.");
-                    selectedIndex = -1;
-                }
-
-                if (selectedIndex < 0 || selectedIndex > maxIndex) Console.WriteLine("This is a valid index");
-            }
-
-            return socketGuilds[selectedIndex];
-        }
+                    case "help":
+                        console.HelpMessage();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "status":
+                        console.StatusChange();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "message":
+                        console.ConsoleSendMessage();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "spawn":
+                        console.SpawnPokemon();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "shinyspawn":
+                        console.ShinySpawnPokemon();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "update":
+                        console.ConsoleUpdate();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "sql":
+                        console.SQLConsole();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "close":
+                        console.CloseDatabase();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "connection":
+                        console.Connection();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    case "client":
+                        console.ClientStatus();
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
+                    default:
+                        input = String.Empty;
+                        input = Console.ReadLine();
+                        break;
 
 
-        SqliteDbContext database = new SqliteDbContext();
-
-        private async Task Client_Log(LogMessage Message)
-        {
-            Console.WriteLine($"{DateTime.Now} at {Message.Source} {Message.Message}");
-
-        }
-
-        private async Task Client_Ready()
-        {
-            if (BeingTested)
-            {
-                await client.SetGameAsync("Pokemon bot is being tested", "", ActivityType.Watching);
-                await client.SetStatusAsync(UserStatus.DoNotDisturb);
+                }
             }
-            else
-            {
-                await client.SetGameAsync("Prefix `p.`", "", ActivityType.Watching);
-            }
-
         }
     }
 }

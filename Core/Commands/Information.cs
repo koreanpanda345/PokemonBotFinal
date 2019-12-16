@@ -5,7 +5,7 @@ using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 using PokemonBot.Resources.Database;
 using PokemonBot.Core.Calculations;
@@ -16,6 +16,8 @@ namespace PokemonBot.Core.Commands
     public class Information : ModuleBase<SocketCommandContext>
     {
         private int pages = 1;
+        private int lastPoke = 1;
+        private RestUserMessage msg;
 
         [Command("select"), Summary("Lets you select which pokemon you want to have set as your partner.")]
         public async Task SelectPokemon(int num)
@@ -51,21 +53,26 @@ namespace PokemonBot.Core.Commands
             Console.WriteLine(num);
             int i = 1;
             while (i < num)
-            {
-                Console.WriteLine(i);
+            {           
                 pokemon += $"**{Data.PokemonData.GetPokemon(id, i)}** |Id: {i}| Level: {Data.PokemonData.GetLevel(id, i)}\n";
-                ++i;  
+                ++i;
+                lastPoke = num;
             }
-            
             embed.WithDescription(pokemon);
             RestUserMessage msg = await Context.Channel.SendMessageAsync("", embed: embed.Build());
-            var backwards = new Emoji("◀");
-            var forward = new Emoji("▶");
-            await msg.AddReactionAsync(backwards);
-            await msg.AddReactionAsync(forward);
+            this.msg = msg;
             Global.MessageIdToTrack = msg.Id;
             
         }
+        /*
+        [Command("next")]
+        [Alias("n")]
+        public async Task turnPage()
+        {
+           await TurnPage();
+        }
+        */
+
 
         [Command("info"), Summary("Lets you info your pokemon.")]
         public async Task InfoPokemon(string id = "0")
@@ -185,8 +192,32 @@ namespace PokemonBot.Core.Commands
             embed.WithImageUrl("http://play.pokemonshowdown.com/sprites/xyani/" + name + ".gif");
             await Context.Channel.SendMessageAsync("", embed: embed.Build());
         }
+/*
+        public async Task TurnPage()
+        {
+            ++pages;
+            string pokemon = "";
+            int num = 16 * pages;
+            if(pages <= 7)
+            {
+                Console.WriteLine(num);
+                int i = lastPoke;
 
-       
+                while (i < num)
+                {
+                    Console.WriteLine(i);
+                    pokemon += $"**{Data.PokemonData.GetPokemon(Context.Message.Author.Id, i)}** |Id: {i}| Level: {Data.PokemonData.GetLevel(Context.Message.Author.Id, i)}\n";
+                    ++i;
+                }
+                EmbedBuilder embed = new EmbedBuilder();
+                embed.WithDescription(pokemon);
+                await msg.ModifyAsync(m =>
+                {
+                    m.Embed = embed.Build();
+                });
+            }
+        }
+       */
     }
 }
 

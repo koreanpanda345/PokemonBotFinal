@@ -6,7 +6,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using System.Linq;
 using NReco.ImageGenerator;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 using PokemonBot.Core.Data;
 namespace PokemonBot.Core.Commands

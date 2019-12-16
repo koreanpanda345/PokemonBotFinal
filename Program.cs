@@ -2,7 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Threading.Tasks;
-
+using System.Threading;
 
 using Discord.Commands;
 using System.Reflection;
@@ -20,8 +20,6 @@ namespace PokemonBot
     class Program
     {
         static void Main(string[] args)
-       => new PokemonBot().MainAsync().GetAwaiter().GetResult();
-
-        
+            => new PokemonBot().MainAsync().GetAwaiter().GetResult();
     }
 }

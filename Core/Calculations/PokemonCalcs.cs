@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using PokemonBot.Core.Data;
-using PokeApiNet.Data;
+using PokeApiNet;
 using PokeApiNet.Models;
 
 

@@ -1,9 +1,0 @@
-﻿{
-  "Adaptability": {
-    "Effect": "Adaptability increases STAB from 1.5× to 2×.",
-    "Type": {
-      "condition": "STAB",
-      "amount": 2
-    }
-  }
-}
